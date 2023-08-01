@@ -8,9 +8,9 @@ public class SecurityMethods {
     public static boolean inputPassword(String CurrentPassword) {
         String InputCurrentPassword;
 
-            System.out.println("Password:");
-            InputCurrentPassword = Inputter.inputNotBlank();
-            String res = encryptThisString(InputCurrentPassword);
+        System.out.println("Password:");
+        InputCurrentPassword = Inputter.inputNotBlank();
+        String res = encryptThisString(InputCurrentPassword);
         
         if (res.equals(CurrentPassword)) return true;
         else {
