@@ -5,7 +5,7 @@ import java.io.*;
 public class AccountList extends ArrayList<Account> {
     
     public void listAll() {
-        for (Account acc: this) acc.output();
+        for (Account acc: this) System.out.println(acc);
     }
     
     public Account found(String AccNumber) {
@@ -19,7 +19,6 @@ public class AccountList extends ArrayList<Account> {
     }
     
     public boolean numberNotDuplicated(String Number) {
-        Number = Number.trim().toUpperCase();
         return found(Number) != null;
     }
     
@@ -35,7 +34,7 @@ public class AccountList extends ArrayList<Account> {
         System.out.println("New account number:");
         do {
             AccNum = Inputter.inputNotBlank();
-        } while (numberNotDuplicated(AccNum) == false);
+        } while (numberNotDuplicated(AccNum) == true);
         System.out.println("Account owner:");
         String AccOwner = Inputter.inputNotBlank();
         System.out.println("Initiate password:");
@@ -58,13 +57,13 @@ public class AccountList extends ArrayList<Account> {
     
     public void save() {
         try {
-            // Serialize the ArrayList to a file
+            // Serialize all Accounts to a file
             FileOutputStream fileOut = new FileOutputStream("AccountList.ser");
             ObjectOutputStream accOut = new ObjectOutputStream(fileOut);
             for (Account acc : this) accOut.writeObject(acc);
             accOut.close();
             fileOut.close();
-            System.out.println("All accounts are serialized and saved to 'AccountList.ser'");
+            //System.out.println("All accounts are serialized and saved to 'AccountList.ser'");
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -73,7 +72,7 @@ public class AccountList extends ArrayList<Account> {
     
     public void load() {
          try {
-            // Deserialize the ArrayList from the file
+            // Deserialize all Accounts from the file
             FileInputStream fileIn = new FileInputStream("AccountList.ser");
             ObjectInputStream accIn = new ObjectInputStream(fileIn);
             while(true) {
@@ -87,7 +86,7 @@ public class AccountList extends ArrayList<Account> {
             }
             accIn.close();
             fileIn.close();
-            System.out.println("All accounts are deserialized from 'AccountList.ser' and added to AccountList");
+            //System.out.println("All accounts are deserialized from 'AccountList.ser' and added to AccountList");
 
         } 
         catch (IOException | ClassNotFoundException e) {

@@ -8,13 +8,13 @@ public class SecurityMethods {
     public static boolean inputPassword(String CurrentPassword) {
         String InputCurrentPassword;
 
-        System.out.println("Password:");
+        System.out.println("Your password:");
         InputCurrentPassword = Inputter.inputNotBlank();
         String res = encryptThisString(InputCurrentPassword);
         
         if (res.equals(CurrentPassword)) return true;
         else {
-            System.out.println("(!)Wrong password! Access denied!");
+            System.out.println("(!)Wrong password!");
             return false;
         }
     }
@@ -50,16 +50,4 @@ public class SecurityMethods {
             throw new RuntimeException(e);
         }
     }
-    
-//    public void save() {
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter("encrypted.txt"))) {
-//            for (Account acc : AccountList) {
-//                String line = acc.getAccountNumber() + ":" + acc.getPassword();
-//                writer.write(line);
-//                writer.newLine();
-//            }
-//        } catch (IOException e) {
-//            System.out.println("Error occurred while saving cars: " + e.getMessage());
-//        }
-//    }
 }

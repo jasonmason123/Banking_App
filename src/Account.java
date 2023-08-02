@@ -3,9 +3,10 @@ import java.lang.*;
 import java.io.*;
 
 public class Account implements Serializable {
+    private static final long serialVersionUID = 3086936957232207550L;
     private String AccountNumber,
                    AccountOwner;
-    private transient String EncryptPassword;
+    private String Etpd;
     private double Balance = 0;
     
     public Account() {
@@ -14,7 +15,7 @@ public class Account implements Serializable {
     public Account(String AccountNumber, String AccountOwner, String InitialPassword) {
         this.AccountNumber = AccountNumber;
         this.AccountOwner = AccountOwner;
-        this.EncryptPassword = SecurityMethods.encryptThisString(InitialPassword);
+        this.Etpd = SecurityMethods.encryptThisString(InitialPassword);
     }
 
 //Account number and owner
@@ -38,24 +39,21 @@ public class Account implements Serializable {
     
 //Can save passwords into a txt file
 //Use encryption methods, like hashing
-    public String getEncryptPassword() {
-        return EncryptPassword;
+    public String getEtpd() {
+        return Etpd;
     }
 
     public void setPassword() {
-        boolean check = SecurityMethods.inputPassword(getEncryptPassword());
+        boolean check = SecurityMethods.inputPassword(getEtpd());
         if (check == true){
             System.out.println("What's your new password?");
             String newPassword = Inputter.inputNotBlank();
-            this.EncryptPassword = SecurityMethods.encryptThisString(newPassword);
+            this.Etpd = SecurityMethods.encryptThisString(newPassword);
             System.out.println("New password has been updated!");
         }
     }
 
 //Balance
-    private double getBalance() {
-        return Balance;
-    }
     
     private void updateBalance (double Amount) {
         this.Balance += Amount;
@@ -78,7 +76,7 @@ public class Account implements Serializable {
         System.out.println("How much do you want to withdraw?");
         double Amount = Inputter.inputAmount();
         System.out.println("Please verify your transaction:");
-        boolean Verify = SecurityMethods.inputPassword(getEncryptPassword());
+        boolean Verify = SecurityMethods.inputPassword(getEtpd());
         if (this.Balance >= Amount && Verify==true) {
             this.Balance -= Amount;
             System.out.println("Transaction success!");
@@ -91,15 +89,21 @@ public class Account implements Serializable {
     }
     
     public boolean transferMoney(Account Destination) {
+        if (Destination == this) {
+            System.out.println("(!)Invalid account number! Cannot transfer money to own account!");
+            return false;
+        }
         System.out.println("How much do you want to transfer?");
         double Amount = Inputter.inputAmount();
-        System.out.println("Please verify your transaction:");
-        boolean Verify = SecurityMethods.inputPassword(getEncryptPassword());
         if (this.Balance >= Amount) {
-            this.Balance -= Amount;
-            Destination.updateBalance(Amount, "ADD");
-            System.out.println("Transaction success!");
-            return true;
+            System.out.println("Please verify your transaction:");
+            boolean Verify = SecurityMethods.inputPassword(getEtpd());
+            if (Verify) {
+                this.Balance -= Amount;
+                Destination.updateBalance(Amount, "ADD");
+                System.out.println("Transaction success!");
+            }
+            return Verify;
         }
         else {
             System.out.println("Your balance is less than " + Amount + "\n(!)Transaction failed");
@@ -110,12 +114,10 @@ public class Account implements Serializable {
 //output
     @Override
     public String toString() {
-        return "Account{" + "AccountNumber=" + AccountNumber + ", AccountOwner=" + AccountOwner + '}';
+        return "Account: " + AccountNumber + ", Owner: " + AccountOwner;
     }
     
-    public void output() {
-        System.out.println(AccountOwner + "'s account:");
-        boolean check = SecurityMethods.inputPassword(getEncryptPassword());
-        if (check == true) System.out.println("Account: " + AccountNumber +"\nOwner: " + AccountOwner + "\nBalance: " + Balance + '$');
+    void output() {
+        System.out.println("Account: " + AccountNumber +"\nOwner: " + AccountOwner + "\nBalance: " + Balance + '$');
     }
 }

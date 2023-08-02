@@ -3,66 +3,101 @@ import java.lang.*;
 import java.io.*;
 
 public class Banking_App {
-    private static Account CustomerAccount;
     
     public static void main(String[] args) {
+        
+        Menu mn = new Menu();
         AccountList AccLst = new AccountList();
-        Account JohnAccount = new Account("00123", "John", "h2qbz3");
-        AccLst.add(JohnAccount);
+//        AccLst.add(new Account("00123", "John", "h2qbz3"));
+//        AccLst.add(new Account("00124", "Joe", "h2qbz3"));
+//        AccLst.save();
+        AccLst.load();
         
-        boolean valid;
-        boolean check;
+        String[] LogIn = {"Customer", "Administrator", "Press any other number to exit"};
+        int LogInAs;
+        System.out.println("Log in as:");
+        LogInAs = mn.int_getChoice(LogIn);
         
-        String[] CustomerMenu = {"Set/Reset password", "Add money to balance", "Withdraw money", "Transfer money", "Display account information", "Exit"};
-        System.out.println("---==============Banking app==============---");
-        System.out.println("Customer log in:");
-        
-//        do {
-//            
-//        } while (valid != true || check != true);
-        
-        System.out.println("Account number:");
-        String AccNum = Inputter.inputNotBlank();
-        if (AccLst.found(AccNum) != null) {
-            valid = true;
+        if (LogInAs == 1) {
+            Account CustomerAccount;
+            boolean valid = false;
+            String[] CustomerMenu = {"Set/Reset password", "Add money to balance", "Withdraw money", "Transfer money", "Exit"};
+            System.out.println("---==============Banking app==============---");
+            System.out.println("Customer login:");
+
+            System.out.println("Account number:");
+            String AccNum = Inputter.inputNotBlank();
             CustomerAccount = AccLst.found(AccNum);
-            check = SecurityMethods.inputPassword(CustomerAccount.getEncryptPassword());
-        } else {
-            valid = false;
-            check = false;
-        }
-        
-        
-        if (valid && check) {
-            System.out.println("\n(*)Welcome, " + CustomerAccount.getAccountOwner());
-            Menu mn = new Menu();
-            int choice;
-            do {
-                System.out.println("---==============Menu==============---");
-                choice = mn.int_getChoice(CustomerMenu);
-                switch (choice) {
-                    case 1:
-                        CustomerAccount.setPassword();
-                        break;
-                    case 2:
-                        CustomerAccount.addMoney();
-                        break;
-                    case 3:
-                        CustomerAccount.withdrawMoney();
-                        break;
-                    case 4:
-                        Account Destination = AccLst.searchAccount();
-                        CustomerAccount.transferMoney(Destination);
-                        break;
-                    case 5:
-                        CustomerAccount.output();
-                        break;
-                    default:
-                        System.out.println("Have a great day!");
-                        AccLst.save();
-                        break;
+            while (CustomerAccount != null) {
+                boolean check = SecurityMethods.inputPassword(CustomerAccount.getEtpd());
+                if (check) {
+                    valid = true;
                 }
-            }while(choice > 0 && choice < 5);
+                break;
+            }
+
+            if (valid) {
+                System.out.println("\nWelcome, " + CustomerAccount.getAccountOwner() + '!');
+                int choice;
+                do {
+                    System.out.println("---============Account============---");
+                    CustomerAccount.output();
+                    System.out.println("---==============Menu==============---");
+                    choice = mn.int_getChoice(CustomerMenu);
+                    switch (choice) {
+                        case 1:
+                            CustomerAccount.setPassword();
+                            break;
+                        case 2:
+                            CustomerAccount.addMoney();
+                            break;
+                        case 3:
+                            CustomerAccount.withdrawMoney();
+                            break;
+                        case 4:
+                            Account Destination = AccLst.searchAccount();
+                            if (Destination != null) {
+                                CustomerAccount.transferMoney(Destination);
+                            }
+                            break;
+                        default:
+                            System.out.println("Have a great day!");
+                            break;
+                    }
+                } while (choice > 0 && choice < 5);
+            }
         }
+        
+        else if (LogInAs == 2) {
+            System.out.println("Admin login:");
+            String pswd = SecurityMethods.encryptThisString("admin");
+            boolean valid = SecurityMethods.inputPassword(pswd);
+            if (valid) {
+                String[] AdminMenu = {"List all accounts", "Search an account", "Add an account", "Delete an account", "Exit"};
+                int choice;
+                do {
+                    System.out.println("---==============Administrator==============---");
+                    choice = mn.int_getChoice(AdminMenu);
+                    switch (choice) {
+                        case 1:
+                            AccLst.listAll();
+                            break;
+                        case 2:
+                            System.out.println(AccLst.searchAccount());
+                            break;
+                        case 3:
+                            AccLst.addAccount();
+                            break;
+                        case 4:
+                            AccLst.deleteAccount();
+                            break;
+                        default:
+                            System.out.println("Have a nice day!");
+                            break;
+                    }
+                }while (choice > 0 && choice < 5);
+            }
+        }
+        AccLst.save();
     }
 }
