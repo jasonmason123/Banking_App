@@ -15,6 +15,7 @@ public class Banking_App {
         
         String[] LogIn = {"Customer", "Administrator", "Press any other number to exit"};
         int LogInAs;
+        System.out.println("---==============Banking app==============---");
         System.out.println("Log in as:");
         LogInAs = mn.int_getChoice(LogIn);
         
@@ -22,7 +23,7 @@ public class Banking_App {
             Account CustomerAccount;
             boolean valid = false;
             String[] CustomerMenu = {"Set/Reset password", "Add money to balance", "Withdraw money", "Transfer money", "Exit"};
-            System.out.println("---==============Banking app==============---");
+            System.out.println("---==============Customer==============---");
             System.out.println("Customer login:");
 
             System.out.println("Account number:");
@@ -40,7 +41,7 @@ public class Banking_App {
                 System.out.println("\nWelcome, " + CustomerAccount.getAccountOwner() + '!');
                 int choice;
                 do {
-                    System.out.println("---============Account============---");
+                    System.out.println("---=========" + CustomerAccount.getAccountOwner() + "'s account=========---");
                     CustomerAccount.output();
                     System.out.println("---==============Menu==============---");
                     choice = mn.int_getChoice(CustomerMenu);

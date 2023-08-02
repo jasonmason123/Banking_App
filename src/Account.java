@@ -36,9 +36,8 @@ public class Account implements Serializable {
     public void setAccountOwner(String AccountOwner) {
         this.AccountOwner = AccountOwner;
     }
-    
-//Can save passwords into a txt file
-//Use encryption methods, like hashing
+
+//Account security
     public String getEtpd() {
         return Etpd;
     }
@@ -75,12 +74,14 @@ public class Account implements Serializable {
     public boolean withdrawMoney() {
         System.out.println("How much do you want to withdraw?");
         double Amount = Inputter.inputAmount();
-        System.out.println("Please verify your transaction:");
-        boolean Verify = SecurityMethods.inputPassword(getEtpd());
-        if (this.Balance >= Amount && Verify==true) {
-            this.Balance -= Amount;
-            System.out.println("Transaction success!");
-            return true;
+        if (this.Balance >= Amount) {
+            System.out.println("Please verify your transaction:");
+            boolean Verify = SecurityMethods.inputPassword(getEtpd());
+            if (Verify) {
+                this.Balance -= Amount;
+                System.out.println("Transaction success!");
+            }
+            return Verify;
         }
         else {
             System.out.println("Your balance is less than " + Amount + "\n(!)Transaction failed");
