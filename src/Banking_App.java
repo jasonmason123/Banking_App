@@ -84,7 +84,8 @@ public class Banking_App {
                             AccLst.listAll();
                             break;
                         case 2:
-                            System.out.println(AccLst.searchAccount());
+                            Account acc = AccLst.searchAccount();
+                            if(acc != null) System.out.println(acc);
                             break;
                         case 3:
                             AccLst.addAccount();

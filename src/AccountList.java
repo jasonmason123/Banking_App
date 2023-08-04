@@ -2,20 +2,14 @@ import java.util.*;
 import java.lang.*;
 import java.io.*;
 
-public class AccountList extends ArrayList<Account> {
+public class AccountList extends TreeMap<String, Account> {
     
     public void listAll() {
-        for (Account acc: this) System.out.println(acc);
+        for (Account acc: this.values()) System.out.println(acc);
     }
     
     public Account found(String AccNumber) {
-        for (Account acc : this) {
-            if (acc.getAccountNumber().equals(AccNumber)) {
-                return acc;
-            }
-        }
-        System.out.println("(!)Account not found!");
-        return null;
+        return this.get(AccNumber);
     }
     
     public boolean numberNotDuplicated(String Number) {
@@ -23,15 +17,16 @@ public class AccountList extends ArrayList<Account> {
     }
     
     public Account searchAccount() {
-        System.out.println("Please input destination account number:");
+        System.out.println("Destination account number:");
         String AccNum = Inputter.inputNotBlank();
         Account result = found(AccNum);
+        if (result == null) System.out.println("(!)Account not found!");
         return result;
     }
     
     public void addAccount() {
         String AccNum;
-        System.out.println("New account number:");
+        System.out.println("New account number");
         do {
             AccNum = Inputter.inputNotBlank();
         } while (numberNotDuplicated(AccNum) == true);
@@ -40,19 +35,17 @@ public class AccountList extends ArrayList<Account> {
         System.out.println("Initiate password:");
         String Psswrd = Inputter.inputNotBlank();
         Account newAcc = new Account(AccNum, AccOwner, Psswrd);
-        this.add(newAcc);
-        System.out.println("Account" + AccNum + "was successfully added!");
+        this.put(AccNum, newAcc);
+        System.out.println("Account " + AccNum + ", owned by Mr./Ms./Mrs." + AccOwner + " was successfully added!");
     }
     
     public void deleteAccount() {
-        System.out.println("Delete account:");
-        System.out.println("(*)Please input account number:");
+        System.out.println("Delete account");
+        System.out.println("Account number:");
         String AccNum = Inputter.inputNotBlank();
-        Account result = found(AccNum);
-        if (result != null){
-            this.remove(result);
-            System.out.println("Account " + result.getAccountNumber() + " has been deleted!");
-        }
+        Account result = this.remove(AccNum);
+        if (result != null) System.out.println("Account " + result.getAccountNumber() + " has been deleted!");
+        else System.out.println("(!)Account not found!");
     }
     
     public void save() {
@@ -60,7 +53,7 @@ public class AccountList extends ArrayList<Account> {
             // Serialize all Accounts to a file
             FileOutputStream fileOut = new FileOutputStream("AccountList.ser");
             ObjectOutputStream accOut = new ObjectOutputStream(fileOut);
-            for (Account acc : this) accOut.writeObject(acc);
+            for (Account acc : this.values()) accOut.writeObject(acc);
             accOut.close();
             fileOut.close();
             //System.out.println("All accounts are serialized and saved to 'AccountList.ser'");
@@ -78,7 +71,7 @@ public class AccountList extends ArrayList<Account> {
             while(true) {
                 try {
                     Account acc = (Account) accIn.readObject();
-                    this.add(acc);
+                    this.put(acc.getAccountNumber(), acc);
                 }
                 catch(EOFException e) {
                     break;
