@@ -30,7 +30,7 @@ public class Banking_App {
             String AccNum = Inputter.inputNotBlank();
             CustomerAccount = AccLst.found(AccNum);
             while (CustomerAccount != null) {
-                boolean check = SecurityMethods.inputPassword(CustomerAccount.getEtpd());
+                boolean check = CustomerAccount.verifyAccessByPassword();
                 if (check) {
                     valid = true;
                 }

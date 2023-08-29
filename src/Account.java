@@ -38,12 +38,13 @@ public class Account implements Serializable {
     }
 
 //Account security
-    public String getEtpd() {
-        return Etpd;
+    
+    public boolean verifyAccessByPassword() {
+        return SecurityMethods.inputPassword(Etpd);
     }
 
     public void setPassword() {
-        boolean check = SecurityMethods.inputPassword(getEtpd());
+        boolean check = verifyAccessByPassword();
         if (check == true){
             System.out.println("What's your new password?");
             String newPassword = Inputter.inputNotBlank();
@@ -66,8 +67,7 @@ public class Account implements Serializable {
     
     public void addMoney() {
         System.out.println("How much do you want to add to your balance?");
-        double Amount = Inputter.inputAmount();
-        this.Balance += Amount;
+        updateBalance(Inputter.inputAmount());
         System.out.println("Transaction success!");
     }
     
@@ -76,7 +76,7 @@ public class Account implements Serializable {
         double Amount = Inputter.inputAmount();
         if (this.Balance >= Amount) {
             System.out.println("Please verify your transaction:");
-            boolean Verify = SecurityMethods.inputPassword(getEtpd());
+            boolean Verify = verifyAccessByPassword();
             if (Verify) {
                 this.Balance -= Amount;
                 System.out.println("Transaction success!");
@@ -98,7 +98,7 @@ public class Account implements Serializable {
         double Amount = Inputter.inputAmount();
         if (this.Balance >= Amount) {
             System.out.println("Please verify your transaction:");
-            boolean Verify = SecurityMethods.inputPassword(getEtpd());
+            boolean Verify = verifyAccessByPassword();
             if (Verify) {
                 this.Balance -= Amount;
                 Destination.updateBalance(Amount, "ADD");
