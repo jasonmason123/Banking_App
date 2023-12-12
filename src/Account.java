@@ -1,6 +1,4 @@
-import java.util.*;
-import java.lang.*;
-import java.io.*;
+import java.io.Serializable;
 
 public class Account implements Serializable {
     private static final long serialVersionUID = 3086936957232207550L;
@@ -25,9 +23,6 @@ public class Account implements Serializable {
     
     //This method can be removed if we can make a generateAccountNumber() method.
     //Recommend doing researches on bank account number
-    public void setAccountNumber(String AccountNumber) {
-        this.AccountNumber = AccountNumber;
-    }
 
     public String getAccountOwner() {
         return AccountOwner;
@@ -44,10 +39,11 @@ public class Account implements Serializable {
     }
 
     public void setPassword() {
+        System.out.println("Current password:");
         boolean check = verifyAccessByPassword();
         if (check == true){
-            System.out.println("What's your new password?");
-            String newPassword = Inputter.inputNotBlank();
+            System.out.println("New password:");
+            String newPassword = Inputter.inputString();
             this.Etpd = SecurityMethods.encryptThisString(newPassword);
             System.out.println("New password has been updated!");
         }
@@ -67,15 +63,15 @@ public class Account implements Serializable {
     
     public void addMoney() {
         System.out.println("How much do you want to add to your balance?");
-        updateBalance(Inputter.inputAmount());
+        updateBalance(Inputter.inputPosDouble());
         System.out.println("Transaction success!");
     }
     
     public boolean withdrawMoney() {
         System.out.println("How much do you want to withdraw?");
-        double Amount = Inputter.inputAmount();
+        double Amount = Inputter.inputPosDouble();
         if (this.Balance >= Amount) {
-            System.out.println("Please verify your transaction:");
+            System.out.println("Please verify your transaction by your password:");
             boolean Verify = verifyAccessByPassword();
             if (Verify) {
                 this.Balance -= Amount;
@@ -95,9 +91,9 @@ public class Account implements Serializable {
             return false;
         }
         System.out.println("How much do you want to transfer?");
-        double Amount = Inputter.inputAmount();
+        double Amount = Inputter.inputPosDouble();
         if (this.Balance >= Amount) {
-            System.out.println("Please verify your transaction:");
+            System.out.println("Please verify your transaction by your password:");
             boolean Verify = verifyAccessByPassword();
             if (Verify) {
                 this.Balance -= Amount;

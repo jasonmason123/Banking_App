@@ -3,35 +3,34 @@ public class Banking_App {
     
     public static void main(String[] args) {
         
-        Menu mn = new Menu();
         AccountList AccLst = new AccountList();
 //        AccLst.add(new Account("00123", "John", "h2qbz3"));
 //        AccLst.add(new Account("00124", "Joe", "h2qbz3"));
 //        AccLst.save();
         AccLst.load();
         
-        String[] LogIn = {"Customer", "Administrator", "Press any other number to exit"};
+        String[] LogIn = {"Customer", "Administrator", "Exit"};
         int LogInAs;
         System.out.println("---==============Banking app==============---");
         System.out.println("Log in as:");
-        LogInAs = mn.int_getChoice(LogIn);
+        LogInAs = Menu.int_getChoice(LogIn);
         
         if (LogInAs == 1) {
             Account CustomerAccount;
             boolean valid = false;
             String[] CustomerMenu = {"Set/Reset password", "Add money to balance", "Withdraw money", "Transfer money", "Exit"};
-            System.out.println("---==============Customer==============---");
-            System.out.println("Customer login:");
+            System.out.println("---==============Customer login==============---");
 
             System.out.println("Account number:");
-            String AccNum = Inputter.inputNotBlank();
+            String AccNum = Inputter.inputString();
             CustomerAccount = AccLst.found(AccNum);
+            System.out.println("Your password:");
             while (CustomerAccount != null) {
                 boolean check = CustomerAccount.verifyAccessByPassword();
                 if (check) {
                     valid = true;
+                    break;
                 }
-                break;
             }
 
             if (valid) {
@@ -41,7 +40,7 @@ public class Banking_App {
                     System.out.println("---=========" + CustomerAccount.getAccountOwner() + "'s account=========---");
                     CustomerAccount.output();
                     System.out.println("---==============Menu==============---");
-                    choice = mn.int_getChoice(CustomerMenu);
+                    choice = Menu.int_getChoice(CustomerMenu);
                     switch (choice) {
                         case 1:
                             CustomerAccount.setPassword();
@@ -75,7 +74,7 @@ public class Banking_App {
                 int choice;
                 do {
                     System.out.println("---==============Administrator==============---");
-                    choice = mn.int_getChoice(AdminMenu);
+                    choice = Menu.int_getChoice(AdminMenu);
                     switch (choice) {
                         case 1:
                             AccLst.listAll();

@@ -5,13 +5,12 @@ public class SecurityMethods {
     public static boolean inputPassword(String CurrentPassword) {
         String InputCurrentPassword;
 
-        System.out.println("Your password:");
-        InputCurrentPassword = Inputter.inputNotBlank();
+        InputCurrentPassword = Inputter.inputString();
         String res = encryptThisString(InputCurrentPassword);
         
         if (res.equals(CurrentPassword)) return true;
         else {
-            System.out.println("(!)Wrong password!");
+            System.err.println("(!)Password incorrect!");
             return false;
         }
     }

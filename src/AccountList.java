@@ -17,7 +17,7 @@ public class AccountList extends TreeMap<String, Account> {
     
     public Account searchAccount() {
         System.out.println("Destination account number:");
-        String AccNum = Inputter.inputNotBlank();
+        String AccNum = Inputter.inputString();
         Account result = found(AccNum);
         if (result == null) System.out.println("(!)Account not found!");
         return result;
@@ -27,12 +27,12 @@ public class AccountList extends TreeMap<String, Account> {
         String AccNum;
         System.out.println("New account number");
         do {
-            AccNum = Inputter.inputNotBlank();
+            AccNum = Inputter.inputString();
         } while (numberNotDuplicated(AccNum) == true);
         System.out.println("Account owner:");
-        String AccOwner = Inputter.inputNotBlank();
+        String AccOwner = Inputter.inputString();
         System.out.println("Initiate password:");
-        String Psswrd = Inputter.inputNotBlank();
+        String Psswrd = Inputter.inputString();
         Account newAcc = new Account(AccNum, AccOwner, Psswrd);
         this.put(AccNum, newAcc);
         System.out.println("Account " + AccNum + ", owned by Mr./Ms./Mrs." + AccOwner + " was successfully added!");
@@ -41,7 +41,7 @@ public class AccountList extends TreeMap<String, Account> {
     public void deleteAccount() {
         System.out.println("Delete account");
         System.out.println("Account number:");
-        String AccNum = Inputter.inputNotBlank();
+        String AccNum = Inputter.inputString();
         Account result = this.remove(AccNum);
         if (result != null) System.out.println("Account " + result.getAccountNumber() + " has been deleted!");
         else System.out.println("(!)Account not found!");
