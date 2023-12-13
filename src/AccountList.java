@@ -1,3 +1,4 @@
+import Validators.Inputter;
 import java.util.*;
 import java.io.*;
 
@@ -16,7 +17,6 @@ public class AccountList extends TreeMap<String, Account> {
     }
     
     public Account searchAccount() {
-        System.out.println("Destination account number:");
         String AccNum = Inputter.inputString();
         Account result = found(AccNum);
         if (result == null) System.out.println("(!)Account not found!");

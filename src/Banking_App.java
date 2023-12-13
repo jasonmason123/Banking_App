@@ -1,4 +1,6 @@
 
+import Validators.*;
+
 public class Banking_App {
     
     public static void main(String[] args) {
@@ -22,15 +24,18 @@ public class Banking_App {
             System.out.println("---==============Customer login==============---");
 
             System.out.println("Account number:");
-            String AccNum = Inputter.inputString();
-            CustomerAccount = AccLst.found(AccNum);
+            do {
+                CustomerAccount = AccLst.searchAccount();
+                if(CustomerAccount == null) System.out.println("Please try again:");
+            } while(CustomerAccount == null);
+            
             System.out.println("Your password:");
-            while (CustomerAccount != null) {
-                boolean check = CustomerAccount.verifyAccessByPassword();
-                if (check) {
-                    valid = true;
-                    break;
-                }
+            boolean check = CustomerAccount.verifyAccessByPassword();
+            if (check) {
+                valid = true;
+            } else {
+                System.err.println("Access denied!");
+                return;
             }
 
             if (valid) {
@@ -52,6 +57,7 @@ public class Banking_App {
                             CustomerAccount.withdrawMoney();
                             break;
                         case 4:
+                            System.out.println("Destination account number:");
                             Account Destination = AccLst.searchAccount();
                             if (Destination != null) {
                                 CustomerAccount.transferMoney(Destination);
@@ -68,7 +74,7 @@ public class Banking_App {
         else if (LogInAs == 2) {
             System.out.println("Admin login:");
             String pswd = SecurityMethods.encryptThisString("admin");
-            boolean valid = SecurityMethods.inputPassword(pswd);
+            boolean valid = SecurityMethods.checkCorrectPassword(pswd);
             if (valid) {
                 String[] AdminMenu = {"List all accounts", "Search an account", "Add an account", "Delete an account", "Exit"};
                 int choice;
@@ -80,6 +86,7 @@ public class Banking_App {
                             AccLst.listAll();
                             break;
                         case 2:
+                            System.out.println("Destination account number:");
                             Account acc = AccLst.searchAccount();
                             if(acc != null) System.out.println(acc);
                             break;

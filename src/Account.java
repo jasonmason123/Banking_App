@@ -1,3 +1,5 @@
+import Validators.SecurityMethods;
+import Validators.Inputter;
 import java.io.Serializable;
 
 public class Account implements Serializable {
@@ -35,7 +37,7 @@ public class Account implements Serializable {
 //Account security
     
     public boolean verifyAccessByPassword() {
-        return SecurityMethods.inputPassword(Etpd);
+        return SecurityMethods.checkCorrectPassword(Etpd);
     }
 
     public void setPassword() {
@@ -43,7 +45,8 @@ public class Account implements Serializable {
         boolean check = verifyAccessByPassword();
         if (check == true){
             System.out.println("New password:");
-            String newPassword = Inputter.inputString();
+            System.out.println("(*)Note: password length must be between 8 and 31 characters, must have letters, numbers and at least one of these special character: !@#$%^&*?");
+            String newPassword = Inputter.inputPattern("^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?]).{8,31}$");
             this.Etpd = SecurityMethods.encryptThisString(newPassword);
             System.out.println("New password has been updated!");
         }
@@ -114,7 +117,7 @@ public class Account implements Serializable {
         return "Account: " + AccountNumber + ", Owner: " + AccountOwner;
     }
     
-    void output() {
+    public void output() {
         System.out.println("Account: " + AccountNumber +"\nOwner: " + AccountOwner + "\nBalance: " + Balance + '$');
     }
 }

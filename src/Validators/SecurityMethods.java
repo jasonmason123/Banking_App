@@ -1,14 +1,17 @@
+package Validators;
+
+import Validators.Inputter;
 import java.math.*;
 import java.security.*;
 
 public class SecurityMethods {
-    public static boolean inputPassword(String CurrentPassword) {
-        String InputCurrentPassword;
+    public static boolean checkCorrectPassword(String correctPassword) {
+        String passwordInput;
 
-        InputCurrentPassword = Inputter.inputString();
-        String res = encryptThisString(InputCurrentPassword);
+        passwordInput = Inputter.inputString();
+        String res = encryptThisString(passwordInput);
         
-        if (res.equals(CurrentPassword)) return true;
+        if (res.equals(correctPassword)) return true;
         else {
             System.err.println("(!)Password incorrect!");
             return false;

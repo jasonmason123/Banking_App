@@ -1,3 +1,5 @@
+package Validators;
+
 import java.util.Scanner;
 
 public class Inputter {
@@ -13,14 +15,14 @@ public class Inputter {
     }
 
 //Make sure that input data is in correct format. If not, input again    
-//    public static String inputPattern(String pattern) {
-//        String input;
-//        do {
-//            System.out.println("(*)Please input:");
-//            input = inputString();
-//        } while (input.matches(pattern) == false);
-//        return input;
-//    }
+    public static String inputPattern(String pattern) {
+        String input;
+        do {
+            input = inputString();
+            if(input.matches(pattern) == false) System.out.println("Wrong format!");
+        } while (input.matches(pattern) == false);
+        return input;
+    }
 
 //Make sure the number inputted is not below 0. If it is, input again    
     public static double inputPosDouble() {
